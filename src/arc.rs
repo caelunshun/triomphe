@@ -420,7 +420,7 @@ unsafe impl<T: ?Sized> StableDeref for Arc<T> {}
 unsafe impl<T: ?Sized> CloneStableDeref for Arc<T> {}
 
 #[cfg(feature = "serde")]
-impl<'de, T: Deserialize<'de>> Deserialize<'de> for Arc<T> {
+impl<'de, T: Deserialize<'de> + ?Sized> Deserialize<'de> for Arc<T> {
     fn deserialize<D>(deserializer: D) -> Result<Arc<T>, D::Error>
     where
         D: ::serde::de::Deserializer<'de>,
@@ -430,7 +430,7 @@ impl<'de, T: Deserialize<'de>> Deserialize<'de> for Arc<T> {
 }
 
 #[cfg(feature = "serde")]
-impl<T: Serialize> Serialize for Arc<T> {
+impl<T: Serialize + ?Sized> Serialize for Arc<T> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ::serde::ser::Serializer,
